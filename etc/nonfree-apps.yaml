@@ -1,6 +1,30 @@
-nonfree-apps: '{yaml.nonfree-apps.dirname}/../apps'
+nonfree-apps-tree: '{yaml.nonfree-apps.dirname}/../apps'
 
 packages:
+  ##############################
+  foundry-licensing:  ##
+  ############################
+    name: FlexLM license information
+    description: |
+      Provides all foundry software packages with flexlm license information
+    environment:
+      variables:
+        # This variable points to the port@host of your license flexLM server
+        # Override this in your own configuration file
+        FOUNDRY_LICENSE_FILE: ' 5053@hostname'
+
+  #######################
+  nonfree-delegates:  ##
+  #####################
+    description: |
+      Utility package to configure boot path for custom application delegates
+      which are made available at boot time.
+    boot:
+      python_paths:
+        - '{yaml.nonfree-apps.dirname}/plug-ins'
+      import:
+        - nonfree-bprocess-delegates
+
   ##################
   aftereffects:  ##
   ################
@@ -13,7 +37,7 @@ packages:
     trees:
       - '/Applications/Adobe After Effects CC'
       - 'C:/Program Files/Adobe/Adobe After Effects CC/Support Files'
-      - '{nonfree-apps}/aftereffects/{packages.ae.version}/{platform.id}'
+      - '{nonfree-apps-tree}/aftereffects/{packages.ae.version}/{platform.id}'
 
   ############
   cinema:  ##
@@ -26,19 +50,41 @@ packages:
     executable: 'CINEMA 4D 64 Bit'
     trees:
       - 'C:/Program Files/MAXON/CINEMA 4D R{packages.cinema.version.major}'
-      - '{nonfree-apps}/cinema4d/{packages.cinema.version}/{platform.id}'
+      - '{nonfree-apps-tree}/cinema4d/{packages.cinema.version}/{platform.id}'
 
-  ##############################
-  foundry-flexlm-licensing:  ##
-  ############################
-    name: FlexLM license information
+  ###################
+  katana:      #####
+  #################
+    name: Katana
     description: |
-      Provides all foundry software packages with flexlm license information
+      A versatile rendering application
+    url: http://www.thefoundry.co.uk/products/katana
+    version: 1.5v1
+    trees:
+      - '{nonfree-apps-tree}/katana/{packages.katana.version}/{platform.id}'
+    executable: katana
+    requires:
+      - foundry-licensing
+      - nonfree-delegates
+    delegate: KatanaProcessControllerDelegate
     environment:
-      variables:
-        # This variable points to the port@host of your license flexLM server
-        # Override this in your own configuration file
-        FOUNDRY_LICENSE_FILE: ' 5053@hostname'
+      executable_search_paths: bin
+
+  ###################
+  mari:        #####
+  #################
+    name: Mari
+    description: |
+      A 3d-projection painter, also suitable for PTex
+    url: http://www.thefoundry.co.uk/products/mari
+    version: 2.0v1
+    root_paths:
+      - '{nonfree-apps-tree}/mari/{packages.mari.version}/{platform.id}'
+    executable: mari
+    requires:
+      - foundry-licensing
+      - nonfree-delegates
+    delegate: MariProcessControllerDelegate
 
   ##########
   nuke: ##
@@ -50,9 +96,9 @@ packages:
     trees:
       - '/Applications/Nuke{packages.nuke.version.major}.{packages.nuke.version.minor}v{packages.nuke.version.patch}'
       - 'C:/Program Files/Nuke{packages.nuke.version.major}.{packages.nuke.version.minor}v{packages.nuke.version.patch}'
-      - '{nonfree-apps}/nuke/{packages.nuke.version.major}.{packages.nuke.version.minor}v{packages.nuke.version.patch}/{platform.id}'
+      - '{nonfree-apps-tree}/nuke/{packages.nuke.version.major}.{packages.nuke.version.minor}v{packages.nuke.version.patch}/{platform.id}'
     requires:
-      - foundry-flexlm-licensing
+      - foundry-licensing
 
   ###########
   nukex:  ##
@@ -74,10 +120,10 @@ packages:
     trees:
       - '/Applications/Hiero{packages.hiero.version.major}.{packages.hiero.version.minor}v{packages.hiero.version.patch}'
       - 'C:/Program Files/The Foundry/Hiero{packages.hiero.version.major}.{packages.hiero.version.minor}v{packages.hiero.version.patch}'
-      - '{nonfree-apps}/hiero/{packages.hiero.version.major}.{packages.hiero.version.minor}v{packages.hiero.version.patch}/{platform.id}'
+      - '{nonfree-apps-tree}/hiero/{packages.hiero.version.major}.{packages.hiero.version.minor}v{packages.hiero.version.patch}/{platform.id}'
     executable: hiero
     requires:
-      - foundry-flexlm-licensing
+      - foundry-licensing
 
   ###########
   maya: ####
@@ -89,11 +135,14 @@ packages:
     trees: 
       - 'C:\Program Files\Autodesk\Maya{packages.maya.version.major}'
       - '/Applications/Autodesk/maya{packages.maya.version.major}'
-      - '{nonfree-apps}/maya/{packages.maya.version}/{platform.id}'
+      - '{nonfree-apps-tree}/maya/{packages.maya.version}/{platform.id}'
     # on windows, the .exe extension is handled automatically
     executable: bin/maya
     # Minor version represents the service pack
     version: 2015.2.0
+    requires:
+      - nonfree-delegates
+    delegate: MayaProcessControllerDelegate
     environment:
       variables:
         MAYA_MMSET_DEFAULT_XCURSOR: 1
@@ -103,3 +152,24 @@ packages:
         AW_JPEG_Q_FACTOR: 90
         # Make sure we see crash logs
         MAYA_DEBUG_ENABLE_CRASH_REPORTING: 1
+
+  ###################
+  3dequalizer: #####
+  #################
+    name: 3DEqualizer
+    description: |
+      A Matchmoving package from ScienceDVisions
+    url: "http://www.sci-d-vis.com/index.php#?site=tech_docs&id=121221_01"
+    version: 4r3b4
+    root_paths:
+       - '{nonfree-apps-tree}/3dequalizer/{packages.3dequalizer.version}/{platform.id}'
+    executable: bin/3DE4.bin
+    requires:
+      - nonfree-delegates
+    delegate: ThreeDEqualizerProcessControllerDelegate
+    environment:
+      variables:
+        TDE4_ROOT: '.'
+        # This must be set in one of the studio specific configuration files
+        # to define the license server
+        # LICENCE_SERVER_3DE4: hostname
