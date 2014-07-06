@@ -1,0 +1,12 @@
+packages:
+  rv:
+    executable: RV64.app/Contents/MacOS/RV64
+  nuke:
+    executable: Nuke{packages.nuke.version.major}.{packages.nuke.version.minor}v{packages.nuke.version.patch}.app/Contents/MacOS/Nuke{packages.nuke.version.major}.{packages.nuke.version.minor}v{packages.nuke.version.patch}
+  hiero:
+    executable: Hiero{packages.hiero.version.major}.{packages.hiero.version.minor}v{packages.hiero.version.patch}.app/Contents/MacOS/Hiero{packages.hiero.version.major}.{packages.hiero.version.minor}v{packages.hiero.version.patch}
+  maya:
+    executable: Maya.app/Contents/MacOS/Maya
+  ae:
+    executable: 'Adobe After Effects CC.app/Contents/MacOS/After Effects'
+  

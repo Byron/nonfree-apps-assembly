@@ -1,0 +1,11 @@
+packages:
+  rv:
+    executable: bin/rv.exe
+  nuke:
+    executable: 'Nuke{packages.nuke.version.major}.{packages.nuke.version.minor}.exe'
+  ae:
+    executable: AfterFX
+    environment:
+      # This is just interesting for windows, as we get license errors otherwise.
+      # no time to figure out which environment variable it wants, which could be configured separately
+      inherit: on

@@ -5,7 +5,10 @@
 			"follow_symlinks": true,
 			"path": "../..",
 			"folder_exclude_patterns" : [
-				"lib"
+				"apps",
+				"pages",
+				".git",
+				"doc"
 			]
 		}
 	]
