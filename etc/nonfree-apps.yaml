@@ -1,4 +1,4 @@
-  nonfree-apps: '{yaml.nonfree-apps.dirname}/../apps'
+nonfree-apps: '{yaml.nonfree-apps.dirname}/../apps'
 
 packages:
   ##################
