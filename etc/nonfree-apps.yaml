@@ -1,0 +1,105 @@
+  nonfree-apps: '{yaml.nonfree-apps.dirname}/../apps'
+
+packages:
+  ##################
+  aftereffects:  ##
+  ################
+    name: After Effects
+    description: |
+      Software for motion graphics effects.
+    url: http://www.adobe.com/de/products/aftereffects.html
+    # NOTE: for now, we start at the CC branch
+    version: '12.1.0'
+    trees:
+      - '/Applications/Adobe After Effects CC'
+      - 'C:/Program Files/Adobe/Adobe After Effects CC/Support Files'
+      - '{nonfree-apps}/aftereffects/{packages.ae.version}/{platform.id}'
+
+  ############
+  cinema:  ##
+  ##########
+    name: Cinema4d
+    description: |
+      A 3d application which does it all. For some reason especially suited for motion graphics.
+    url: http://www.maxon.net/de/products/cinema-4d-studio.html
+    version: '15.008'
+    executable: 'CINEMA 4D 64 Bit'
+    trees:
+      - 'C:/Program Files/MAXON/CINEMA 4D R{packages.cinema.version.major}'
+      - '{nonfree-apps}/cinema4d/{packages.cinema.version}/{platform.id}'
+
+  ##############################
+  foundry-flexlm-licensing:  ##
+  ############################
+    name: FlexLM license information
+    description: |
+      Provides all foundry software packages with flexlm license information
+    environment:
+      variables:
+        # This variable points to the port@host of your license flexLM server
+        # Override this in your own configuration file
+        FOUNDRY_LICENSE_FILE: ' 5053@hostname'
+
+  ##########
+  nuke: ##
+  #######
+    name: Nuke
+    description: Powerful node based compositing
+    url: http://www.thefoundry.co.uk/products/nuke/
+    version: '8.0.4'
+    trees:
+      - '/Applications/Nuke{packages.nuke.version.major}.{packages.nuke.version.minor}v{packages.nuke.version.patch}'
+      - 'C:/Program Files/Nuke{packages.nuke.version.major}.{packages.nuke.version.minor}v{packages.nuke.version.patch}'
+      - '{nonfree-apps}/nuke/{packages.nuke.version.major}.{packages.nuke.version.minor}v{packages.nuke.version.patch}/{platform.id}'
+    requires:
+      - foundry-flexlm-licensing
+
+  ###########
+  nukex:  ##
+  #########
+    requires:
+      - nuke
+    alias: nuke
+    arguments:
+      prepend:
+        - -nukex
+
+  ##########
+  hiero: ##
+  #######
+    name: Hiero
+    description: Powerful onlining tool from The Foundry
+    url: http://www.thefoundry.co.uk/products/hiero/
+    version: '1.8.2'
+    trees:
+      - '/Applications/Hiero{packages.hiero.version.major}.{packages.hiero.version.minor}v{packages.hiero.version.patch}'
+      - 'C:/Program Files/The Foundry/Hiero{packages.hiero.version.major}.{packages.hiero.version.minor}v{packages.hiero.version.patch}'
+      - '{nonfree-apps}/hiero/{packages.hiero.version.major}.{packages.hiero.version.minor}v{packages.hiero.version.patch}/{platform.id}'
+    executable: hiero
+    requires:
+      - foundry-flexlm-licensing
+
+  ###########
+  maya: ####
+  ########
+    name: Maya
+    description: |
+      Autodesk's animation software, more than 15 years old by now.
+    url: http://www.autodesk.com/products/autodesk-maya/overview
+    trees: 
+      - 'C:\Program Files\Autodesk\Maya{packages.maya.version.major}'
+      - '/Applications/Autodesk/maya{packages.maya.version.major}'
+      - '{nonfree-apps}/maya/{packages.maya.version}/{platform.id}'
+    # on windows, the .exe extension is handled automatically
+    executable: bin/maya
+    # Minor version represents the service pack
+    version: 2015.2.0
+    environment:
+      variables:
+        MAYA_MMSET_DEFAULT_XCURSOR: 1
+        # Child windows are on top of parent window
+        MAYA_SET_PARENT_HINT: 1
+        # better looking jpegs
+        AW_JPEG_Q_FACTOR: 90
+        # Make sure we see crash logs
+        MAYA_DEBUG_ENABLE_CRASH_REPORTING: 1
